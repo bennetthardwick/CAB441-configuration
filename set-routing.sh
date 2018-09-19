@@ -1,14 +1,14 @@
 #!/bin/sh
 
-# Reset iptables config
-iptables -P INPUT ACCEPT
-iptables -P OUTPUT ACCEPT
-iptables -P FORWARD ACCEPT
-iptables -F
-
-# Allow only SSH on enp0s3
-iptables -A INPUT -i enp0s3 -p tcp --dport 22 -j ACCEPT
-iptables -A INPUT -i enp0s3 -j DROP
+# # Reset iptables config
+# iptables -P INPUT ACCEPT
+# iptables -P OUTPUT ACCEPT
+# iptables -P FORWARD ACCEPT
+# iptables -F
+# 
+# # Allow only SSH on enp0s3
+# iptables -A INPUT -i enp0s3 -p tcp --dport 22 -j ACCEPT
+# iptables -A INPUT -i enp0s3 -j DROP
 
 # Configure Static IPs
 ip addr add 10.10.1.1/24 dev enp0s8
