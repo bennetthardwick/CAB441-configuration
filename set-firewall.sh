@@ -28,7 +28,13 @@ done
 # Allow Internet Access
 iptables -A OUTPUT -p tcp -o enp0s3 --dport 80  -j ACCEPT
 iptables -A OUTPUT -p tcp -o enp0s3 --dport 443  -j ACCEPT
+
 iptables -A INPUT -i enp0s3 -p tcp -m state --state ESTABLISHED -j ACCEPT
+iptables -A INPUT -i enp0s3 -p tcp -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+
+iptables -A OUTPUT -p icmp -j ACCEPT
+iptables -A INPUT -p icmp -j ACCEPT
+iptables -A FORWARD -p icmp -j ACCEPT
 
 ## Forward Established Packets
 iptables -A FORWARD -m state --state ESTABLISHED -j ACCEPT
@@ -56,5 +62,3 @@ iptables -A FORWARD -i enp0s8 -p tcp --sport 80 -s 192.168.1.80 -j ACCEPT
 ## Port Forward
 iptables -A PREROUTING -t nat -i enp0s3 -p tcp --dport 80 -j DNAT --to 192.168.1.80:80
 iptables -A FORWARD -i enp0s3 -o enp0s8 -p tcp -d 192.168.1.80 --dport 80 -j ACCEPT
-
-# Allow Web Traffic From DMZ Server
