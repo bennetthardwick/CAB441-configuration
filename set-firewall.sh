@@ -44,8 +44,12 @@ iptables -A FORWARD -i enp0s8 -o enp0s3 -p tcp --dport 443 -j ACCEPT
 iptables -A FORWARD -o enp0s3 -i enp0s8 -p tcp --sport 443 -j ACCEPT
 
 # Allow Port 22 For SSH
-iptables -A INPUT -p tcp --dport 22 -j ACCEPT
-iptables -A OUTPUT -p tcp --sport 22 -j ACCEPT
+iptables -A INPUT -i enp0s3 -p tcp --dport 22 -j ACCEPT
+iptables -A OUTPUT -o enp0s3 -p tcp --sport 22 -j ACCEPT
+
+# Allow Port 9418 for Git
+iptables -A OUTPUT -o enp0s3 -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A INPUT -i enp0s3 -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT
 
 # Masquerade IP Address
 iptables -t nat -A POSTROUTING -o enp0s3 -j MASQUERADE
